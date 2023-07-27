@@ -1,8 +1,3 @@
-variable "env" {
-  description = "Which environment to choose"
-  type        = string
-  default     = "dev"
-}
 variable "image" {
   description = "Which image to choose from"
   type        = map(any)
@@ -41,5 +36,5 @@ variable "ext_port" {
   }
 }
 locals {
-  container_count = length(lookup(var.ext_port, var.env))
+  container_count = length(lookup(var.ext_port, terraform.workspace))
 }
