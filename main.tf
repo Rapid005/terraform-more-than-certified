@@ -16,26 +16,26 @@ resource "null_resource" "dockervol" {
 }
 
 resource "random_string" "random" {
-  count   = var.container_count
+  count   = local.container_count
   length  = 4
   special = false
   upper   = false
 }
 
 resource "docker_image" "nodered_image" {
-  name = "nodered/node-red:latest"
+  name = lookup(var.image, var.env)
 }
 
 resource "docker_container" "nodered" {
-  count = var.container_count
+  count = local.container_count
   name  = join("-", ["nodered-container", random_string.random[count.index].result])
   image = docker_image.nodered_image.name
   ports {
     internal = var.int_port
-    external = var.ext_port
+    external = lookup(var.ext_port, var.env)[count.index]
   }
   volumes {
     container_path = "/data"
-    host_path = "/root/terraform-docker/terraform-more-than-certified/noderedvol"
+    host_path      = "${path.cwd}/noderedvol"
   }
 }
