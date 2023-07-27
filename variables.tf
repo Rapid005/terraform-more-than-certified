@@ -1,25 +1,45 @@
+variable "env" {
+  description = "Which environment to choose"
+  type        = string
+  default     = "dev"
+}
+variable "image" {
+  description = "Which image to choose from"
+  type        = map(any)
+  default = {
+    dev  = "nodered/node-red:latest"
+    prod = "nodered/node-red:latest-minimal"
+  }
+}
 variable "container_count" {
   description = "Count Value for containers"
-  type = number
-  default = 1
+  type        = number
+  default     = 1
 }
 
 variable "int_port" {
   description = "Internal port for nodered container"
-  type = number
-  default = 1880
+  type        = number
+  default     = 1880
 
   validation {
-    condition = var.int_port == 1880
+    condition     = var.int_port == 1880
     error_message = "Port should be 1880"
   }
 }
 
 variable "ext_port" {
-  type = number
+  type = map(any)
 
   validation {
-    condition = var.ext_port <= 65535 && var.ext_port > 0
-    error_message = "The external port must be between 0~65535"
+    condition     = max(var.ext_port["dev"]...) <= 65535 && min(var.ext_port["dev"]...) >= 1980
+    error_message = "The external port for dev must be between 1980 > port > 65535"
   }
+  validation {
+    condition     = max(var.ext_port["prod"]...) < 1980 && min(var.ext_port["prod"]...) >= 1880
+    error_message = "The external port for prod  must be between 1880 > port > 1980"
+  }
+}
+locals {
+  container_count = length(lookup(var.ext_port, var.env))
 }
