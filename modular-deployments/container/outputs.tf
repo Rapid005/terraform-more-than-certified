@@ -1,6 +1,3 @@
-output "container-name" {
-  value = docker_container.nodered.name
-}
-output "ip-address" {
-  value = [for i in docker_container.nodered[*]: join( ":", i.network_data[*].ip_address, i.ports[*].external  )]
+output "application_access" {
+  value = { for x in docker_container.app[*] : x.name => join(":", x.network_data[*]["ip_address"], x.ports[*]["external"]) }
 }
