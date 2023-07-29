@@ -2,8 +2,14 @@ variable "image" {
   description = "Which image to choose from"
   type        = map(any)
   default = {
-    dev  = "nodered/node-red:latest"
-    prod = "nodered/node-red:latest-minimal"
+    nodered = {
+      dev  = "nodered/node-red:latest"
+      prod = "nodered/node-red:latest-minimal"
+    }
+    influxdb = {
+      dev  = "quay.io/influxdb/influxdb:v2.0.2"
+      prod = "quay.io/influxdb/influxdb:v2.0.2"
+    }
   }
 }
 variable "container_count" {
@@ -26,15 +32,15 @@ variable "int_port" {
 variable "ext_port" {
   type = map(any)
 
-  validation {
-    condition     = max(var.ext_port["dev"]...) <= 65535 && min(var.ext_port["dev"]...) >= 1980
-    error_message = "The external port for dev must be between 1980 > port > 65535"
-  }
-  validation {
-    condition     = max(var.ext_port["prod"]...) < 1980 && min(var.ext_port["prod"]...) >= 1880
-    error_message = "The external port for prod  must be between 1880 > port > 1980"
-  }
+  #validation {
+  #condition     = max(var.ext_port["dev"]...) <= 65535 && min(var.ext_port["dev"]...) >= 1980
+  #error_message = "The external port for dev must be between 1980 > port > 65535"
+  #}
+  #validation {
+  #condition     = max(var.ext_port["prod"]...) < 1980 && min(var.ext_port["prod"]...) >= 1880
+  #error_message = "The external port for prod  must be between 1880 > port > 1980"
+  #}
 }
-locals {
-  container_count = length(var.ext_port[terraform.workspace])
-}
+#locals {
+#container_count = length(var.ext_port[terraform.workspace])
+#}
