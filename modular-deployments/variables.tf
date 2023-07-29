@@ -10,6 +10,10 @@ variable "image" {
       dev  = "quay.io/influxdb/influxdb:v2.0.2"
       prod = "quay.io/influxdb/influxdb:v2.0.2"
     }
+    grafana = {
+      dev = "grafana/grafana-oss"
+      prod = "grafana/grafana-oss"
+    }
   }
 }
 variable "container_count" {
@@ -41,6 +45,3 @@ variable "ext_port" {
   #error_message = "The external port for prod  must be between 1880 > port > 1980"
   #}
 }
-#locals {
-#container_count = length(var.ext_port[terraform.workspace])
-#}
