@@ -13,6 +13,6 @@ variable "ext_port_in" {
 variable "container_path_in" {
   description = "container path for the container"
 }
-variable "host_path_in" {
-  description = "host path for the container"
+variable "count_in" {
+  description = "number of container its going to generate"
 }
