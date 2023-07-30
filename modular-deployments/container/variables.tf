@@ -10,8 +10,8 @@ variable "int_port_in" {
 variable "ext_port_in" {
   description = "External port number for the container"
 }
-variable "container_path_in" {
-  description = "container path for the container"
+variable "volumes_in" {
+  description = "multiple volume path for the container"
 }
 variable "count_in" {
   description = "number of container its going to generate"
